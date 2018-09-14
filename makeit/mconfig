@@ -20,7 +20,7 @@ tgtcxx=
 tgtcxx_opts=$hstcxx_opts
 hststatic=0
 tgtstatic=0
-package_version=""
+package_version=`git describe --match 'v[0-9]*' --dirty --always | sed -e "s/^v//;s/-/_/g;s/_/-/;s/_/./g"`
 
 
 
@@ -91,11 +91,6 @@ sourcedir=`readlink -f .`
 mfragsdir=$sourcedir/mlocal/frags
 mchecksdir=$sourcedir/mlocal/checks
 
-if [ -z "$package_version" ]; then
-    package_version=`git describe --match 'v[0-9]*' --dirty --always | sed -e "s/^v//;s/-/_/g;s/_/-/;s/_/./g"`
-fi
-# export so this can be used in mlocal/checks
-export package_version
 
 
 #######################################################################
@@ -308,19 +303,19 @@ rm -rf $genconfdir
 
 
 #######################################################################
-# Target package build files
+# Rpm spec for project package
 #######################################################################
 
-TARGET=dist/rpm/singularity.spec
-echo "=> generating $TARGET ..."
-rm -f $TARGET
+RPMSPEC=dist/rpm/singularity.spec
+echo "=> generating $RPMSPEC ..."
+rm -f $RPMSPEC
 VERSION="`echo "$package_version"|sed 's/-.*//'`"
 RELEASE="`echo "$package_version"|sed 's/[^-]*-//'`"
 if [ "$VERSION" = "$RELEASE" ]; then
     # $package_version has no dash
     RELEASE=1
 fi
-sed "s/@PACKAGE_VERSION@/$VERSION/;s/@PACKAGE_RELEASE@/$RELEASE/" $TARGET.in >$TARGET
+sed "s/@PACKAGE_VERSION@/$VERSION/;s/@PACKAGE_RELEASE@/$RELEASE/" $RPMSPEC.in >$RPMSPEC
 
 
 #######################################################################
