@@ -84,7 +84,6 @@ if ! printf "#define _GNU_SOURCE\n#include <sched.h>\nint main() { unshare(CLONE
 	echo "really really really don't want to run Singularity containers without a"
 	echo "Separate mount name namespace!"
 	echo
-	exit 2
 else
 	echo "yes"
 	config_add_def NS_CLONE_NEWNS 1
@@ -170,7 +169,6 @@ EOF
 if ! $tgtcc -x c -o /tmp/nnp_c ${nnp_c} >/dev/null 2>&1; then
 	echo "no"
     echo "ERROR: Failed to compile NO_NEW_PRIVS test"
-    exit 2;
 else
     if ! /tmp/nnp_c; then
         echo "ERROR: Kernel does not support NO_NEW_PRIVS. Updated Kernel is required."
@@ -205,7 +203,6 @@ if ! printf "#include <sys/mount.h>\n#ifndef MS_REC\n#error failed\n#endif\nint 
 	echo
 	echo "This host does not support the MS_REC mount option!"
 	echo
-	exit 2
 else
 	echo "yes"
 fi
@@ -221,7 +218,6 @@ if ! printf "#include <sys/mount.h>\n#ifndef MS_PRIVATE\n#error failed\n#endif\n
 	echo
 	echo "This host does not support the MS_PRIVATE mount option!"
 	echo
-	exit 2
 else
 	echo "yes"
 fi
@@ -260,7 +256,6 @@ if ! printf "#include <linux/capability.h>\nint main() { }" | \
 	echo
 	echo "linux/capability.h header not found, requires kernel headers installation."
 	echo
-	exit 2
 else
 	echo "yes"
 fi
@@ -294,7 +289,6 @@ if ! printf "#include <openssl/sha.h>\nint main() { }" | \
 	echo
 	echo "Unable to find the libssl, need package openssl-devel (libssl-dev on Debian/Ubuntu)"
 	echo
-	exit 2
 else
 	echo "yes"
 fi
@@ -310,7 +304,6 @@ if ! printf "#include <uuid/uuid.h>\nint main() { }" | \
 	echo
 	echo "unable to find the libuuid, need package libuuid-devel (uuid-dev on Debian/Ubuntu)"
 	echo
-	exit 2
 else
 	echo "yes"
 fi
